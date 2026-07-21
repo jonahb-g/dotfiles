@@ -11,6 +11,10 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 vim.opt.scrolloff = 8
 
+-- Save current file (Word-style Ctrl+S, plus <leader>w)
+vim.keymap.set("n", "<leader>w", ":w<CR>", {})
+vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", {})
+
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
   vim.fn.system({
@@ -55,9 +59,10 @@ require("lazy").setup({
     branch = "master",
     build = ":TSUpdate",
     config = function()
-      require("nvim-treesitter.configs").setup({
-        ensure_installed = { "python", "lua", "javascript", "typescript", "json", "markdown" },
-        highlight = { enable = true },
+      require("nvim-treesitter").install({ "python", "lua", "javascript", "typescript", "json", "markdown" })
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { "python", "lua", "javascript", "typescript", "json", "markdown" },
+        callback = function() vim.treesitter.start() end,
       })
     end,
   },
