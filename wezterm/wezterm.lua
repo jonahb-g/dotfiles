@@ -1,4 +1,6 @@
 local wezterm = require("wezterm")
+local act = wezterm.action
+
 
 local config = wezterm.config_builder()
 
@@ -32,5 +34,17 @@ if is_macos then
   config.window_background_opacity = 0.92
   config.macos_window_background_blur = 20
 end
+
+config.keys = {
+  { key = "I", mods = "CMD|SHIFT", action = act.SendString("\x01|") },
+  { key = "B", mods = "CMD|SHIFT", action = act.SendString("\x01-") },
+  { key = "w", mods = "CMD", action = act.SendString("\x01x") },
+  { key = "u", mods = "CMD", action = act.SendString("\x01b") },
+  { key = "r", mods = "CMD", action = act.SendString("\x01b") },
+  { key = "LeftArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "LeftArrow" }) }) },
+{ key = "RightArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "RightArrow" }) }) },
+{ key = "UpArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "UpArrow" }) }) },
+{ key = "DownArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "DownArrow" }) }) },
+}
 
 return config
