@@ -11,9 +11,18 @@ vim.opt.smartcase = true
 vim.opt.signcolumn = "yes"
 vim.opt.scrolloff = 8
 
+-- Show the file path at the top of each window
+vim.opt.winbar = "%f"
+
 -- Save current file (Word-style Ctrl+S, plus <leader>w)
 vim.keymap.set("n", "<leader>w", ":w<CR>", { desc = "Save file" })
 vim.keymap.set({ "n", "i", "v" }, "<C-s>", "<cmd>w<CR>", { desc = "Save file" })
+vim.keymap.set("n", "<leader>rc", "<cmd>source $MYVIMRC<CR>", { desc = "Reload config" })
+
+-- Cmd+h / Cmd+l (sent by WezTerm as Alt-h/Alt-l) move between windows
+vim.keymap.set("n", "<M-h>", "<C-w>h", { desc = "Move to left window" })
+vim.keymap.set("n", "<M-l>", "<C-w>l", { desc = "Move to right window" })
+vim.keymap.set("n", "<Esc>", "i", { desc = "Toggle into insert mode" })
 
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not (vim.uv or vim.loop).fs_stat(lazypath) then
