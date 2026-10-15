@@ -8,9 +8,18 @@ vim.keymap.set("n", "<leader>rc", "<cmd>source $MYVIMRC<CR>", { desc = "Reload c
 
 -- Cmd+h/j/k/l is sent by WezTerm as Ctrl+h/j/k/l, which LazyVim already maps to window navigation.
 
--- Space tt toggles a terminal floating in the middle of the screen, like Space ff
+-- Space tt toggles a terminal floating in the middle of the screen, like Space ff; Esc hides it
 vim.keymap.set("n", "<leader>tt", function()
-  Snacks.terminal.toggle(nil, { win = { position = "float", width = 0.8, height = 0.8, border = "rounded" } })
+  Snacks.terminal.toggle(nil, {
+    win = {
+      position = "float",
+      width = 0.8,
+      height = 0.8,
+      border = "rounded",
+      -- Replaces Snacks' double-Esc-to-normal-mode for this terminal only
+      keys = { term_normal = { "<esc>", "hide", mode = { "t", "n" }, desc = "Hide floating terminal" } },
+    },
+  })
 end, { desc = "Floating terminal" })
 
 -- Overrides LazyVim's default <Esc> behavior (clear search highlight) in normal mode
