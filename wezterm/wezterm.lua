@@ -47,6 +47,8 @@ config.keys = {
 { key = "DownArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "DownArrow" }) }) },
   { key = "h", mods = "CMD", action = act.SendString("\x1bh") },
   { key = "l", mods = "CMD", action = act.SendString("\x1bl") },
+  { key = "j", mods = "CMD", action = act.SendString("\x1bj") },
+  { key = "k", mods = "CMD", action = act.SendString("\x1bk") },
 }
 
 return config
