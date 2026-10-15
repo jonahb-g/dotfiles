@@ -4,6 +4,10 @@
 
 vim.opt.scrolloff = 8 -- LazyVim default is 4
 
+-- Relative line numbers, with the absolute number on the cursor line
+vim.opt.number = true
+vim.opt.relativenumber = true
+
 -- Show the file path at the top of each window
 vim.opt.winbar = "%f"
 

@@ -8,5 +8,10 @@ vim.keymap.set("n", "<leader>rc", "<cmd>source $MYVIMRC<CR>", { desc = "Reload c
 
 -- Cmd+h/j/k/l is sent by WezTerm as Ctrl+h/j/k/l, which LazyVim already maps to window navigation.
 
+-- Space tt toggles a terminal floating in the middle of the screen, like Space ff
+vim.keymap.set("n", "<leader>tt", function()
+  Snacks.terminal.toggle(nil, { win = { position = "float", width = 0.8, height = 0.8, border = "rounded" } })
+end, { desc = "Floating terminal" })
+
 -- Overrides LazyVim's default <Esc> behavior (clear search highlight) in normal mode
 vim.keymap.set("n", "<Esc>", "i", { desc = "Toggle into insert mode" })
