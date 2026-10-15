@@ -4,6 +4,10 @@ return {
     opts = {
       -- Distinguish staged hunks from unstaged ones so we can color them separately.
       signs_staged_enable = true,
+      -- GitLens-style blame (author, age, commit message) at the end of the cursor line.
+      current_line_blame = true,
+      current_line_blame_opts = { delay = 300 },
+      current_line_blame_formatter = "<author>, <author_time:%R> • <summary>",
     },
     config = function(_, opts)
       require("gitsigns").setup(opts)
