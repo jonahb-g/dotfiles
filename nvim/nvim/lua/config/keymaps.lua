@@ -22,5 +22,13 @@ vim.keymap.set("n", "<leader>tt", function()
   })
 end, { desc = "Floating terminal" })
 
+-- Cmd+c / Cmd+f / Cmd+Shift+f arrive from WezTerm as Alt+c / Alt+f / Alt+F
+vim.keymap.set("x", "<M-c>", '"+y', { desc = "Copy selection to system clipboard" })
+vim.keymap.set("n", "<M-f>", "/", { desc = "Search in file" })
+vim.keymap.set("i", "<M-f>", "<Esc>/", { desc = "Search in file" })
+vim.keymap.set({ "n", "i" }, "<M-F>", function()
+  LazyVim.pick("live_grep")()
+end, { desc = "Search project for text" })
+
 -- Overrides LazyVim's default <Esc> behavior (clear search highlight) in normal mode
 vim.keymap.set("n", "<Esc>", "i", { desc = "Toggle into insert mode" })

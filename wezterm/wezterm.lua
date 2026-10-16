@@ -50,6 +50,19 @@ config.keys = {
   { key = "l", mods = "CMD", action = act.SendKey({ key = "l", mods = "CTRL" }) },
   { key = "j", mods = "CMD", action = act.SendKey({ key = "j", mods = "CTRL" }) },
   { key = "k", mods = "CMD", action = act.SendKey({ key = "k", mods = "CTRL" }) },
+  -- Cmd+c copies a WezTerm mouse selection if there is one; otherwise it sends
+  -- Alt+c, which nvim maps to copying its visual selection to the system clipboard.
+  -- Cmd+v keeps WezTerm's default paste.
+  { key = "c", mods = "CMD", action = wezterm.action_callback(function(window, pane)
+    if window:get_selection_text_for_pane(pane) ~= "" then
+      window:perform_action(act.CopyTo("Clipboard"), pane)
+    else
+      window:perform_action(act.SendString("\x1bc"), pane)
+    end
+  end) },
+  -- Cmd+f -> Alt+f (nvim: search like /), Cmd+Shift+f -> Alt+F (nvim: search the whole project)
+  { key = "f", mods = "CMD", action = act.SendString("\x1bf") },
+  { key = "F", mods = "CMD|SHIFT", action = act.SendString("\x1bF") },
 }
 
 return config
