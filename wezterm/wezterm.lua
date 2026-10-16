@@ -35,16 +35,34 @@ if is_macos then
   config.macos_window_background_blur = 20
 end
 
+-- Pane keys drive tmux (prefix Ctrl+a) when the pane runs tmux, or ssh into the
+-- VM's tmux; in a plain local shell they act on WezTerm's own panes instead.
+local function in_tmux(pane)
+  local process = (pane:get_foreground_process_name() or ""):match("[^/]+$") or ""
+  return process == "tmux" or process == "ssh"
+end
+
+local function tmux_or(keys, fallback)
+  return wezterm.action_callback(function(window, pane)
+    if in_tmux(pane) then
+      window:perform_action(act.SendString(keys), pane)
+    else
+      window:perform_action(fallback, pane)
+    end
+  end)
+end
+
 config.keys = {
-  { key = "I", mods = "CMD|SHIFT", action = act.SendString("\x01|") },
-  { key = "B", mods = "CMD|SHIFT", action = act.SendString("\x01-") },
-  { key = "w", mods = "CMD", action = act.SendString("\x01x") },
+  -- Cmd+Shift+i splits side by side, Cmd+Shift+b splits below
+  { key = "I", mods = "CMD|SHIFT", action = tmux_or("\x01|", act.SplitHorizontal({ domain = "CurrentPaneDomain" })) },
+  { key = "B", mods = "CMD|SHIFT", action = tmux_or("\x01-", act.SplitVertical({ domain = "CurrentPaneDomain" })) },
+  { key = "w", mods = "CMD", action = tmux_or("\x01x", act.CloseCurrentPane({ confirm = true })) },
   { key = "u", mods = "CMD", action = act.SendString("\x01b") },
   { key = "r", mods = "CMD", action = act.SendString("\x01b") },
-  { key = "LeftArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "LeftArrow" }) }) },
-{ key = "RightArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "RightArrow" }) }) },
-{ key = "UpArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "UpArrow" }) }) },
-{ key = "DownArrow", mods = "CMD", action = act.Multiple({ act.SendKey({ key = "a", mods = "CTRL" }), act.SendKey({ key = "DownArrow" }) }) },
+  { key = "LeftArrow", mods = "CMD", action = tmux_or("\x01\x1b[D", act.ActivatePaneDirection("Left")) },
+  { key = "RightArrow", mods = "CMD", action = tmux_or("\x01\x1b[C", act.ActivatePaneDirection("Right")) },
+  { key = "UpArrow", mods = "CMD", action = tmux_or("\x01\x1b[A", act.ActivatePaneDirection("Up")) },
+  { key = "DownArrow", mods = "CMD", action = tmux_or("\x01\x1b[B", act.ActivatePaneDirection("Down")) },
   -- Cmd+h/j/k/l -> Ctrl+h/j/k/l, which nvim maps to window navigation
   { key = "h", mods = "CMD", action = act.SendKey({ key = "h", mods = "CTRL" }) },
   { key = "l", mods = "CMD", action = act.SendKey({ key = "l", mods = "CTRL" }) },
