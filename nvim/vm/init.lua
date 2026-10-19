@@ -229,8 +229,8 @@ vim.keymap.set("x", "<M-c>", '"+y', { desc = "Copy selection to system clipboard
 vim.keymap.set("n", "<M-f>", "/", { desc = "Search in file" })
 vim.keymap.set("i", "<M-f>", "<Esc>/", { desc = "Search in file" })
 
--- Mouse back / forward buttons, like a browser: Karabiner turns them into Alt+o /
--- Alt+i while WezTerm is in front (karabiner/ in dotfiles); they walk the jump list.
+-- Mouse back / forward buttons, like a browser: Logi Options+ sends Alt+o / Alt+i
+-- for them in WezTerm (WezTerm can't see those buttons); they walk the jump list.
 vim.keymap.set("n", "<M-o>", "<C-o>", { desc = "Jump back" })
 vim.keymap.set("n", "<M-i>", "<C-i>", { desc = "Jump forward" })
 vim.keymap.set("i", "<M-o>", "<Esc><C-o>", { desc = "Jump back" })
